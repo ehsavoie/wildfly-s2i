@@ -32,7 +32,6 @@ jobs:
           sudo apt-get install krb5-multidev
       - name: Verify latest centos image is present
         run: |
-          docker image ls | grep centos
           docker pull centos:7
           docker pull centos/s2i-base-centos7
           docker image ls | grep centos
@@ -61,21 +60,21 @@ jobs:
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           make
           docker image ls
-      - name: Behave Tests
-        run: |
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          pushd wildfly-builder-image
-          cekit -v test behave --steps-url https://github.com/luck3y/behave-test-steps.git
-          popd
-      - name: Additional Tests
-        run: |
-          export IMAGE_VERSION=dev
-          export NAMESPACE=wildfly
-          export PLATFORM=centos7
-          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
-          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          ./test/run
+#      - name: Behave Tests
+#        run: |
+#          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+#          pushd wildfly-builder-image
+#          cekit -v test behave --steps-url https://github.com/luck3y/behave-test-steps.git
+#          popd
+#      - name: Additional Tests
+#        run: |
+#          export IMAGE_VERSION=dev
+#          export NAMESPACE=wildfly
+#          export PLATFORM=centos7
+#          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
+#          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
+#          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+#          ./test/run
       - name: Push to quay.io
         if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
         run: |
